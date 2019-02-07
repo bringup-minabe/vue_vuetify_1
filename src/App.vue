@@ -41,7 +41,7 @@
             <v-list-tile
               v-for="(child, i) in item.children"
               :key="i"
-              @click=""
+              @click="link_to(child.path)"
             >
               <v-list-tile-action v-if="child.icon">
                 <v-icon>{{ child.icon }}</v-icon>
@@ -53,7 +53,7 @@
               </v-list-tile-content>
             </v-list-tile>
           </v-list-group>
-          <v-list-tile v-else :key="item.text" @click="">
+          <v-list-tile v-else :key="item.text" @click="link_to(item.path)">
             <v-list-tile-action>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-tile-action>
@@ -76,7 +76,7 @@
     >
       <v-toolbar-title style="width: 300px" class="ml-0 pl-0">
         <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-        <span class="hidden-sm-and-down">App Name</span>
+        <span class="hidden-sm-and-down"><router-link to="/">App Name</router-link></span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
 
@@ -92,7 +92,7 @@
 
     <v-content>
       <v-container fluid ma-0 pa-10>
-          Dashboard
+          <router-view></router-view>
       </v-container>
     </v-content>
 
@@ -105,27 +105,40 @@
       dialog: false,
       drawer: null,
       items: [
-        { icon: 'contacts', text: '顧客情報' },
-        { icon: 'list_alt', text: 'メモ' },
+        { icon: 'contacts', text: '顧客情報', path: 'customers' },
+        { icon: 'list_alt', text: 'メモ', path: 'memos' },
         {
           icon: 'keyboard_arrow_up',
           'icon-alt': 'keyboard_arrow_down',
           text: 'More',
           model: false,
           children: [
-            { text: 'Import' },
-            { text: 'Export' },
-            { text: 'Print' },
-            { text: 'Undo changes' },
-            { text: 'Other contacts' }
+            { text: 'Import', path: '/' },
+            { text: 'Export', path: '/' },
+            { text: 'Print', path: '/' },
+            { text: 'Undo changes', path: '/' },
+            { text: 'Other contacts', path: '/' }
           ]
         },
-        { icon: 'settings', text: 'Settings' },
-        { icon: 'help', text: 'Help' },
+        { icon: 'settings', text: 'Settings', path: 'settings' },
       ]
     }),
     props: {
       source: String
+    },
+    methods: {
+      link_to(path) {
+        this.$router.push(path)
+      }
     }
   }
 </script>
+
+<style lang="scss">
+.v-toolbar__title {
+  a {
+    text-decoration: none;
+    color: #FFF;
+  }
+}
+</style>
