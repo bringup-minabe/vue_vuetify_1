@@ -5,6 +5,7 @@
       :clipped="$vuetify.breakpoint.lgAndUp"
       fixed
       app
+      width="250"
     >
       <v-list dense>
         <template v-for="item in items">
@@ -65,17 +66,17 @@
         </template>
       </v-list>
     </v-navigation-drawer>
-    
+
     <v-toolbar
       :clipped-left="$vuetify.breakpoint.lgAndUp"
-      color="blue darken-3"
+      color="#002c4c"
       dark
       app
       fixed
     >
       <v-toolbar-title style="width: 300px" class="ml-0 pl-0">
         <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-        <span class="hidden-sm-and-down">Dashboard</span>
+        <span class="hidden-sm-and-down">App Name</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
 
@@ -90,7 +91,7 @@
     </v-toolbar>
 
     <v-content>
-      <v-container>
+      <v-container fluid ma-0 pa-10>
           Dashboard
       </v-container>
     </v-content>
@@ -104,18 +105,8 @@
       dialog: false,
       drawer: null,
       items: [
-        { icon: 'contacts', text: 'Contacts' },
-        { icon: 'history', text: 'Frequently contacted' },
-        { icon: 'content_copy', text: 'Duplicates' },
-        {
-          icon: 'keyboard_arrow_up',
-          'icon-alt': 'keyboard_arrow_down',
-          text: 'Labels',
-          model: true,
-          children: [
-            { icon: 'add', text: 'Create label' }
-          ]
-        },
+        { icon: 'contacts', text: '顧客情報' },
+        { icon: 'list_alt', text: 'メモ' },
         {
           icon: 'keyboard_arrow_up',
           'icon-alt': 'keyboard_arrow_down',
@@ -130,10 +121,7 @@
           ]
         },
         { icon: 'settings', text: 'Settings' },
-        { icon: 'chat_bubble', text: 'Send feedback' },
         { icon: 'help', text: 'Help' },
-        { icon: 'phonelink', text: 'App downloads' },
-        { icon: 'keyboard', text: 'Go to the old version' }
       ]
     }),
     props: {
