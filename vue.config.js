@@ -1,5 +1,4 @@
 module.exports = {
-  publicPath: '/vue_cli/vue_vuetify_1/',
   devServer: {
     open: process.platform === 'darwin',
     host: '0.0.0.0',
