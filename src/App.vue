@@ -120,7 +120,7 @@
             { text: 'Other contacts', path: '/' }
           ]
         },
-        { icon: 'settings', text: 'Settings', path: 'settings' },
+        { icon: 'settings', text: '設定', path: 'settings' },
       ]
     }),
     props: {

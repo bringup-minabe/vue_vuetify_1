@@ -1,5 +1,5 @@
 <template>
   <div class="customers">
-    <h1>customers page</h1>
+    <h1>顧客情報</h1>
   </div>
 </template>

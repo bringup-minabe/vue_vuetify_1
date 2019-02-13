@@ -1,5 +1,5 @@
 <template lang="html">
   <div class="memos">
-    <h1>memos page</h1>
+    <h1>メモ</h1>
   </div>
 </template>
