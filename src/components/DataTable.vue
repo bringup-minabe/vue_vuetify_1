@@ -1,24 +1,24 @@
 <template>
   <v-flex mt-4 mb-4>
-    <div class="elevation-1" style="margin-bottom: 40px;">
+    <div class="elevation-1">
       <div class="v-table__overflow">
-        <table class="v-datatable v-table v-datatable--select-all theme--light">
+        <table class="v-datatable v-table v-datatable--select-all theme--light data-table">
           <thead>
             <tr>
-              <td v-if="hide_checkbox === false">
+              <th v-if="hide_checkbox === false" style="width: 15px;">
                 <v-checkbox
                   v-model="selectAll"
                   primary
                   hide-details
                 ></v-checkbox>
-              </td>
-              <td v-for="(h, index) in headers" :key="index" v-bind:class="[h.align]">
+              </th>
+              <th v-for="(h, index) in headers" :key="index" v-bind:class="[h.align]">
                 {{h.text}}
-              </td>
+              </th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, index) in items" :key="index">
+            <tr v-for="(item, index) in items" :key="index" v-bind:class="[item.class]">
               <td v-if="hide_checkbox === false">
                 <v-checkbox
                   v-model="selected[index]"
@@ -66,10 +66,17 @@ export default {
   },
   mounted() {
     for (var i = 0; i < this.headers.length; i++) {
-      if (this.headers[i]['align'] == 'undefiend') {
+      if (typeof this.headers[i]['align'] == 'undefined') {
         this.headers[i]['align'] = 'text-xs-left'
       } else {
         this.headers[i]['align'] = 'text-xs-' + this.headers[i]['align']
+      }
+    }
+    for (var e = 0; e < this.items.length; e++) {
+      if (typeof this.items[e]['class'] == 'undefined') {
+        this.items[e]['class'] = ''
+      } else {
+        this.items[e]['class'] = 'dt-' + this.items[e]['class']
       }
     }
   },
@@ -88,4 +95,30 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.v-table {
+  thead {
+    tr {
+      // height: 40px;
+    }
+  }
+  td {
+    // height: 35px;
+  }
+}
+.dt-success {
+  background-color: #d4edda;
+  color: #155724;
+}
+.dt-danger {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+.dt-warning {
+  background-color: #fff3cd;
+  color: #856404;
+}
+.dt-info {
+  background-color: #d1ecf1;
+  color: #0c5460;
+}
 </style>

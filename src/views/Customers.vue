@@ -42,7 +42,8 @@ export default {
           id: '1',
           full_name: '山田太郎',
           check: 'check',
-          created: '2019-02-14 10:20:00'
+          created: '2019-02-14 10:20:00',
+          class: 'success'
         },
         {
           id: '2',
@@ -55,3 +56,16 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.customers {
+  .data-table {
+    th:nth-child(2) {
+      width: 100px;
+    }
+    th:nth-child(3) {
+      width: 100px;
+    }
+  }
+}
+</style>
