@@ -12,7 +12,7 @@
                   hide-details
                 ></v-checkbox>
               </td>
-              <td v-for="(h, index) in headers" :key="index">
+              <td v-for="(h, index) in headers" :key="index" v-bind:class="[h.align]">
                 {{h.text}}
               </td>
             </tr>
@@ -27,7 +27,7 @@
                   hide-details
                 ></v-checkbox>
               </td>
-              <td v-for="(h, index) in headers" :key="index">
+              <td v-for="(h, index) in headers" :key="index" v-bind:class="[h.align]">
                 <template v-if="h.filter">
                   {{item[h.value] | set_filter(h.filter)}}
                 </template>
@@ -62,6 +62,15 @@ export default {
     return {
       selected: [],
       selectAll: false
+    }
+  },
+  mounted() {
+    for (var i = 0; i < this.headers.length; i++) {
+      if (this.headers[i]['align'] == 'undefiend') {
+        this.headers[i]['align'] = 'text-xs-left'
+      } else {
+        this.headers[i]['align'] = 'text-xs-' + this.headers[i]['align']
+      }
     }
   },
   watch: {

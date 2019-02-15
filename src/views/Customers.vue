@@ -28,7 +28,8 @@ export default {
         {
           text: 'check',
           value: 'check',
-          type: 'icon'
+          type: 'icon',
+          align: 'center'
         },
         {
           text: '登録日時',
