@@ -26,6 +26,11 @@ export default {
           value: 'full_name'
         },
         {
+          text: 'check',
+          value: 'check',
+          type: 'icon'
+        },
+        {
           text: '登録日時',
           value: 'created',
           filter: 'YMDHm'
@@ -35,11 +40,13 @@ export default {
         {
           id: '1',
           full_name: '山田太郎',
+          check: 'check',
           created: '2019-02-14 10:20:00'
         },
         {
           id: '2',
           full_name: '山田次郎',
+          check: '',
           created: '2019-02-15 10:20:00'
         }
       ]

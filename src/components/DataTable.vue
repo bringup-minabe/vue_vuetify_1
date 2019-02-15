@@ -32,7 +32,12 @@
                   {{item[h.value] | set_filter(h.filter)}}
                 </template>
                 <template v-else>
-                  {{item[h.value]}}
+                  <template v-if="h.type == 'icon' && item[h.value] != ''">
+                    <font-awesome-icon :icon="item[h.value]" />
+                  </template>
+                  <template v-else>
+                    {{item[h.value]}}
+                  </template>
                 </template>
               </td>
             </tr>
