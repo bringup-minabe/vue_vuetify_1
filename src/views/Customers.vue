@@ -27,7 +27,8 @@ export default {
         },
         {
           text: '登録日時',
-          value: 'created'
+          value: 'created',
+          filter: 'YMDHm'
         }
       ],
       items: [

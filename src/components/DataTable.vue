@@ -1,6 +1,5 @@
 <template>
   <v-flex mt-4 mb-4>
-
     <div class="elevation-1" style="margin-bottom: 40px;">
       <div class="v-table__overflow">
         <table class="v-datatable v-table v-datatable--select-all theme--light">
@@ -29,20 +28,26 @@
                 ></v-checkbox>
               </td>
               <td v-for="(h, index) in headers" :key="index">
-                {{item[h.value]}}
+                <template v-if="h.filter">
+                  {{item[h.value] | set_filter(h.filter)}}
+                </template>
+                <template v-else>
+                  {{item[h.value]}}
+                </template>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
-
   </v-flex>
 </template>
 
 <script>
+import Filter from "../mixins/Filter"
 export default {
   name: 'DataTable',
+  mixins: [Filter],
   props: {
     headers: Array,
     items: Array,
