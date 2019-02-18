@@ -1,3 +1,16 @@
+<!--
+ * DataTable component
+ *
+ * @param Array headers
+ *  text: String
+ *  value: String json key
+ *  type: String value 'icon' or null
+ *  filter: String mixins/Filter set_filter
+ *  align: String 'center', 'left', 'right'
+ * @param Array items
+ *  tr_class: String tr background color 'success', 'danger', 'warning', 'info'
+ * @param Boolean hide_checkbox
+-->
 <template>
   <v-flex mt-4 mb-4>
     <div class="elevation-1">
@@ -18,7 +31,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, index) in items" :key="index" v-bind:class="[item.class]">
+            <tr v-for="(item, index) in items" :key="index" v-bind:class="[item.tr_class]">
               <td v-if="hide_checkbox === false">
                 <v-checkbox
                   v-model="selected[index]"
@@ -70,6 +83,14 @@ export default {
     }
   },
   created() {
+    //format headers
+    for (var i = 0; i < this.headers.length; i++) {
+      if (typeof this.headers[i]['align'] == 'undefined') {
+        this.headers[i]['align'] = 'text-xs-left'
+      } else {
+        this.headers[i]['align'] = 'text-xs-' + this.headers[i]['align']
+      }
+    }
     //get api
     this.axios
       .get(process.env.VUE_APP_API_URL + this.api_path)
@@ -84,20 +105,12 @@ export default {
       .finally(() => this.loading = false)
   },
   mounted() {
-    //format headers
-    for (var i = 0; i < this.headers.length; i++) {
-      if (typeof this.headers[i]['align'] == 'undefined') {
-        this.headers[i]['align'] = 'text-xs-left'
-      } else {
-        this.headers[i]['align'] = 'text-xs-' + this.headers[i]['align']
-      }
-    }
     //format items
     for (var e = 0; e < this.items.length; e++) {
-      if (typeof this.items[e]['class'] == 'undefined') {
-        this.items[e]['class'] = ''
+      if (typeof this.items[e]['tr_class'] == 'undefined') {
+        this.items[e]['tr_class'] = ''
       } else {
-        this.items[e]['class'] = 'dt-' + this.items[e]['class']
+        this.items[e]['tr_class'] = 'dt-' + this.items[e]['tr_class']
       }
     }
   },
