@@ -3,6 +3,8 @@ import Vuetify from 'vuetify'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
 import 'babel-polyfill'
 import 'vuetify/dist/vuetify.min.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -15,6 +17,7 @@ library.add(fas, fab, far)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.use(Vuetify);
+Vue.use(VueAxios, axios);
 
 Vue.config.productionTip = false
 

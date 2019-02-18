@@ -3,7 +3,7 @@
     <h1>顧客情報</h1>
     <DataTable
     :headers="headers"
-    :items="items"
+    api_path="customers/index/index.json"
     >
     </DataTable>
   </div>
@@ -26,30 +26,9 @@ export default {
           value: 'full_name'
         },
         {
-          text: 'check',
-          value: 'check',
-          type: 'icon',
-          align: 'center'
-        },
-        {
           text: '登録日時',
           value: 'created',
           filter: 'YMDHm'
-        }
-      ],
-      items: [
-        {
-          id: '1',
-          full_name: '山田太郎',
-          check: 'check',
-          created: '2019-02-14 10:20:00',
-          class: 'success'
-        },
-        {
-          id: '2',
-          full_name: '山田次郎',
-          check: '',
-          created: '2019-02-15 10:20:00'
         }
       ]
     }
@@ -64,7 +43,7 @@ export default {
       width: 100px;
     }
     th:nth-child(3) {
-      width: 100px;
+      width: 150px;
     }
   }
 }

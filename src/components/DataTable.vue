@@ -49,22 +49,42 @@
 </template>
 
 <script>
+import HttpMixin from "../mixins/HttpMixin"
 import Filter from "../mixins/Filter"
 export default {
   name: 'DataTable',
-  mixins: [Filter],
+  mixins: [HttpMixin, Filter],
   props: {
     headers: Array,
-    items: Array,
+    api_path: String,
     hide_checkbox: Boolean
   },
   data () {
     return {
+      items: [],
       selected: [],
-      selectAll: false
+      selectAll: false,
+      error: {},
+      errored: false,
+      loading: false
     }
   },
+  created() {
+    //get api
+    this.axios
+      .get(process.env.VUE_APP_API_URL + this.api_path)
+      .then(response => {
+        this.items = response.data.customers
+        this.loading = true
+      })
+      .catch(error => {
+        this.error = error
+        this.errored = true
+      })
+      .finally(() => this.loading = false)
+  },
   mounted() {
+    //format headers
     for (var i = 0; i < this.headers.length; i++) {
       if (typeof this.headers[i]['align'] == 'undefined') {
         this.headers[i]['align'] = 'text-xs-left'
@@ -72,6 +92,7 @@ export default {
         this.headers[i]['align'] = 'text-xs-' + this.headers[i]['align']
       }
     }
+    //format items
     for (var e = 0; e < this.items.length; e++) {
       if (typeof this.items[e]['class'] == 'undefined') {
         this.items[e]['class'] = ''
@@ -98,11 +119,11 @@ export default {
 .v-table {
   thead {
     tr {
-      // height: 40px;
+      height: 40px;
     }
   }
   td {
-    // height: 35px;
+    height: 35px;
   }
 }
 .dt-success {
