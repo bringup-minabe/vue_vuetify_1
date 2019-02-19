@@ -83,6 +83,7 @@ export default {
     props: {
         headers: Array,
         api_path: String,
+        items_key: String,
         hide_checkbox: Boolean
     },
     data () {
@@ -94,6 +95,20 @@ export default {
             errored: false,
             loading: true,
             progress_colspan: 0
+        }
+    },
+    methods: {
+        getData() {
+            this.axios
+            .get(process.env.VUE_APP_API_URL + this.api_path)
+            .then(response => {
+                this.items = response.data[this.items_key]
+            })
+            .catch(error => {
+                this.error = error
+                this.errored = true
+            })
+            .finally(() => this.loading = false)
         }
     },
     created() {
@@ -112,16 +127,7 @@ export default {
             this.progress_colspan = this.headers.length + 1
         }
         //get api
-        this.axios
-        .get(process.env.VUE_APP_API_URL + this.api_path)
-        .then(response => {
-            this.items = response.data.customers
-        })
-        .catch(error => {
-            this.error = error
-            this.errored = true
-        })
-        .finally(() => this.loading = false)
+        this.getData()
     },
     mounted() {
         //format items

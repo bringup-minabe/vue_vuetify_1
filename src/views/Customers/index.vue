@@ -4,6 +4,7 @@
         <DataTable
         :headers="headers"
         api_path="customers/index/index.json"
+        items_key="customers"
         >
     </DataTable>
 </div>
