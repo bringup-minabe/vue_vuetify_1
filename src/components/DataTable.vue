@@ -29,6 +29,19 @@
                                 {{h.text}}
                             </th>
                         </tr>
+                        <tr class="v-datatable__progress">
+                            <th :colspan="progress_colspan" class="column" v-if="loading">
+                                <div role="progressbar" aria-valuemin="0" aria-valuemax="100" class="v-progress-linear" style="height: 7px;">
+                                    <div class="v-progress-linear__background blue" style="height: 7px; opacity: 0.3; width: 100%;"></div>
+                                    <div class="v-progress-linear__bar">
+                                        <div class="v-progress-linear__bar__indeterminate v-progress-linear__bar__indeterminate--active">
+                                            <div class="v-progress-linear__bar__indeterminate long blue"></div>
+                                            <div class="v-progress-linear__bar__indeterminate short blue"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                        </tr>
                     </thead>
                     <tbody>
                         <tr v-for="(item, index) in items" :key="index" v-bind:class="[item.tr_class]">
@@ -79,7 +92,8 @@ export default {
             selectAll: false,
             error: {},
             errored: false,
-            loading: false
+            loading: true,
+            progress_colspan: 0
         }
     },
     created() {
@@ -91,12 +105,17 @@ export default {
                 this.headers[i]['align'] = 'text-xs-' + this.headers[i]['align']
             }
         }
+        //ste progress colspan
+        if (this.hide_checkbox) {
+            this.progress_colspan = this.headers.length
+        } else {
+            this.progress_colspan = this.headers.length + 1
+        }
         //get api
         this.axios
         .get(process.env.VUE_APP_API_URL + this.api_path)
         .then(response => {
             this.items = response.data.customers
-            this.loading = true
         })
         .catch(error => {
             this.error = error
