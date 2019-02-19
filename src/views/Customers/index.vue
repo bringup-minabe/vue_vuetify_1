@@ -20,7 +20,8 @@ export default {
             headers: [
                 {
                     text: 'Id',
-                    value: 'id'
+                    value: 'id',
+                    sort_field: 'Customers.id'
                 },
                 {
                     text: '氏名',
@@ -29,7 +30,8 @@ export default {
                 {
                     text: '登録日時',
                     value: 'created',
-                    filter: 'YMDHm'
+                    filter: 'YMDHm',
+                    sort_field: 'Customers.created'
                 }
             ]
         }

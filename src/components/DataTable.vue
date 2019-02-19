@@ -4,6 +4,7 @@
 * @param Array headers
 *  text: String
 *  value: String json key
+*  sort_field: String
 *  type: String value 'icon' or null
 *  filter: String mixins/Filter set_filter
 *  align: String 'center', 'left', 'right'
@@ -35,7 +36,23 @@
                                 ></v-checkbox>
                             </th>
                             <th v-for="(h, index) in headers" :key="index" v-bind:class="[h.align]">
-                                {{h.text}}
+                                <span v-if="typeof h.sort_field != 'undefined'">
+                                    <span
+                                    v-if="paginate.sort == h.sort_field"
+                                    v-bind:class="[paginate.direction, 'sort-th']"
+                                    v-on:click='sortData(h.sort_field)'
+                                    >
+                                        {{h.text}}
+                                    </span>
+                                    <span
+                                    v-else
+                                    v-on:click='sortData(h.sort_field)'
+                                    class="sort-th"
+                                    >
+                                        {{h.text}}
+                                    </span>
+                                </span>
+                                <span v-else>{{h.text}}</span>
                             </th>
                         </tr>
                         <tr class="v-datatable__progress">
@@ -115,7 +132,8 @@ let paginate_params = {
     pageCount: 0,
     sort: '',
     start: '',
-    end: ''
+    end: '',
+    direction: ''
 }
 
 export default {
@@ -182,17 +200,21 @@ export default {
         },
         paginateNext() {
             this.params['page'] = this.paginate.page + 1
+        },
+        sortData(sort_field) {
+            //set sort
+            let direction = 'asc'
+            if (this.paginate.direction == 'asc') {
+                direction = 'desc'
+            }
+            //get data
+            this.params['page'] = 1
+            this.params['sort'] = sort_field
+            this.params['direction'] = direction
+            this.getData()
         }
     },
     created() {
-        //format headers
-        for (var i = 0; i < this.headers.length; i++) {
-            if (typeof this.headers[i]['align'] == 'undefined') {
-                this.headers[i]['align'] = 'text-xs-left'
-            } else {
-                this.headers[i]['align'] = 'text-xs-' + this.headers[i]['align']
-            }
-        }
         //ste progress colspan
         if (this.hide_checkbox) {
             this.progress_colspan = this.headers.length
@@ -209,6 +231,16 @@ export default {
                 this.items[e]['tr_class'] = ''
             } else {
                 this.items[e]['tr_class'] = 'dt-' + this.items[e]['tr_class']
+            }
+        }
+        //format headers
+        for (var i = 0; i < this.headers.length; i++) {
+            if (typeof this.headers[i]['align'] == 'undefined') {
+                this.headers[i]['align'] = 'text-xs-left'
+            } else {
+                if (this.headers[i]['align'].indexOf('text-xs-') == -1) {
+                    this.headers[i]['align'] = 'text-xs-' + this.headers[i]['align']
+                }
             }
         }
     },
@@ -237,6 +269,25 @@ export default {
     thead {
         tr {
             height: 40px;
+        }
+        .sort-th {
+            position: relative;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        .asc:after, .desc:after {
+            position: absolute;
+            top: 0;
+            right: -15px;
+            display: inline-block;
+            font-size: 70%;
+            text-decoration: none;
+        }
+        .asc:after {
+            content: "▲";
+        }
+        .desc:after {
+            content: "▼";
         }
     }
     td {
@@ -286,6 +337,9 @@ export default {
         display: inline-block;
         position: relative;
         vertical-align: middle;
+    }
+    .v-btn {
+        min-width: 55px;
     }
 }
 </style>
