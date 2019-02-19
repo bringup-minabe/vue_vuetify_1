@@ -10,31 +10,31 @@ import Settings from './views/Settings.vue'
 Vue.use(Router)
 
 export default new Router({
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: Home
-    },
-    {
-      path: '/about',
-      name: 'about',
-      component: About
-    },
-    {
-      path: '/customers',
-      name: 'customers',
-      component: CustomersIndex
-    },
-    {
-      path: '/memos',
-      name: 'memos',
-      component: MemosIndex
-    },
-    {
-      path: '/settings',
-      name: 'settings',
-      component: Settings
-    },
-  ]
+    routes: [
+        {
+            path: '/',
+            name: 'home',
+            component: Home
+        },
+        {
+            path: '/about',
+            name: 'about',
+            component: About
+        },
+        {
+            path: '/customers',
+            name: 'customers',
+            component: CustomersIndex
+        },
+        {
+            path: '/memos',
+            name: 'memos',
+            component: MemosIndex
+        },
+        {
+            path: '/settings',
+            name: 'settings',
+            component: Settings
+        },
+    ]
 })
