@@ -140,7 +140,7 @@ export default {
             params: {
                 page: 1,
                 search: '',
-                limit: 5
+                limit: this.$store.state.paginate_limit
             },
             paginate: paginate_params,
             sortTypeAsc: true
@@ -149,7 +149,9 @@ export default {
     methods: {
         getData() {
             //reset params
+            this.data = []
             this.items = []
+            this.paginate = paginate_params
             this.loading = true
             this.selectAll = false
             this.selected = []
@@ -161,18 +163,12 @@ export default {
             .then(response => {
                 if (typeof response.data != 'undefined') {
                     this.data = response.data
-                } else {
-                    this.data = []
                 }
                 if (typeof response.data[this.items_key] != 'undefined') {
                     this.items = response.data[this.items_key]
-                } else {
-                    this.items = []
                 }
                 if (typeof response.data.paginate != 'undefined') {
                     this.paginate = response.data.paginate
-                } else {
-                    this.paginate = paginate_params
                 }
             })
             .catch(error => {
