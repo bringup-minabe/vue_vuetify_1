@@ -13,6 +13,15 @@
 -->
 <template>
     <v-flex mt-4 mb-4>
+        <div class="v-page-count" v-cloak>
+            <div class="v-page-count-total">
+                <label class="select-label">件数</label>
+                <span>{{paginate.count | set_filter('number_format')}}</span>件
+            </div>
+            <div class="v-page-count-se" v-if="paginate.start != ''">
+                <span>{{paginate.start | set_filter('number_format')}}</span> - <span>{{paginate.end | set_filter('number_format')}}</span>
+            </div>
+        </div>
         <div class="elevation-1">
             <div class="v-table__overflow">
                 <table class="v-datatable v-table v-datatable--select-all theme--light data-table">
@@ -71,12 +80,44 @@
                 </table>
             </div>
         </div>
+        <div class="paginator" v-bind:class="{ paginator_active: paginate.count > 1 }">
+            <div class="v-page-count" v-cloak>
+                <div class="v-page-count-total">
+                    <label class="select-label">件数</label>
+                    <span>{{paginate.count | set_filter('number_format')}}</span>件
+                </div>
+                <div class="v-page-count-se" v-if="paginate.start != ''">
+                    <span>{{paginate.start | set_filter('number_format')}}</span> - <span>{{paginate.end | set_filter('number_format')}}</span>
+                </div>
+            </div>
+            <div class="pagecount" v-if="paginate.pageCount > 0">
+                {{paginate.page}}/{{paginate.pageCount}}
+            </div>
+            <div class="btn-group" role="group" aria-label="paginate">
+                <v-btn depressed small v-if="paginate.prevPage" v-on:click='paginatePrev'><v-icon>keyboard_arrow_left</v-icon></v-btn>
+                <v-btn small disabled v-else><v-icon>keyboard_arrow_left</v-icon></v-btn>
+                <v-btn depressed small v-if="paginate.nextPage" v-on:click='paginateNext'><v-icon>keyboard_arrow_right</v-icon></v-btn>
+                <v-btn small disabled v-else><v-icon>keyboard_arrow_right</v-icon></v-btn>
+            </div>
+        </div>
     </v-flex>
 </template>
 
 <script>
 import HttpMixin from "../mixins/HttpMixin"
 import Filter from "../mixins/Filter"
+
+let paginate_params = {
+    count: 0,
+    page: 1,
+    nextPage: true,
+    prevPage: false,
+    pageCount: 0,
+    sort: '',
+    start: '',
+    end: ''
+}
+
 export default {
     name: 'DataTable',
     mixins: [HttpMixin, Filter],
@@ -88,27 +129,63 @@ export default {
     },
     data () {
         return {
+            data: [],
             items: [],
             selected: [],
             selectAll: false,
             error: {},
             errored: false,
             loading: true,
-            progress_colspan: 0
+            progress_colspan: 0,
+            params: {
+                page: 1,
+                search: '',
+                limit: 5
+            },
+            paginate: paginate_params,
+            sortTypeAsc: true
         }
     },
     methods: {
         getData() {
+            //reset params
+            this.items = []
+            this.loading = true
+            this.selectAll = false
+            this.selected = []
+            //get data
             this.axios
-            .get(process.env.VUE_APP_API_URL + this.api_path)
+            .get(process.env.VUE_APP_API_URL + this.api_path, {
+                params: this.params
+            })
             .then(response => {
-                this.items = response.data[this.items_key]
+                if (typeof response.data != 'undefined') {
+                    this.data = response.data
+                } else {
+                    this.data = []
+                }
+                if (typeof response.data[this.items_key] != 'undefined') {
+                    this.items = response.data[this.items_key]
+                } else {
+                    this.items = []
+                }
+                if (typeof response.data.paginate != 'undefined') {
+                    this.paginate = response.data.paginate
+                } else {
+                    this.paginate = paginate_params
+                }
             })
             .catch(error => {
                 this.error = error
                 this.errored = true
             })
             .finally(() => this.loading = false)
+        },
+        paginatePrev() {
+            this.params['page'] = this.paginate.page - 1
+        },
+        paginateNext() {
+            this.params['page'] = this.paginate.page + 1
         }
     },
     created() {
@@ -148,7 +225,13 @@ export default {
             } else {
                 this.selected = []
             }
-        }
+        },
+        params: {
+            handler() {
+                this.getData()
+            },
+            deep: true
+        },
     }
 }
 </script>
@@ -179,5 +262,34 @@ export default {
 .dt-info {
     background-color: #d1ecf1;
     color: #0c5460;
+}
+.v-page-count {
+    padding-bottom: 5px;
+    div {
+        display: inline-block;
+        vertical-align: top;
+    }
+    .v-page-count-total {
+        margin-right: 10px;
+    }
+}
+.paginator {
+    position: relative;
+    padding: 15px 0 30px;
+    text-align: right;
+    .v-page-count {
+        position: absolute;
+        top: 22px;
+        left: 0;
+    }
+    .pagecount {
+        display: inline-block;
+        padding-right: 20px;
+    }
+    .btn-group {
+        display: inline-block;
+        position: relative;
+        vertical-align: middle;
+    }
 }
 </style>
