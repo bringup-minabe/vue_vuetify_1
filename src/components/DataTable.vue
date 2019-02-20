@@ -244,9 +244,6 @@ export default {
         }
     },
     mounted() {
-        //set params default
-        this.$set(this.params, 'page', 1)
-        this.$set(this.params, 'limit', this.$store.state.paginate_limit)
         //set view key
         if (this.view_key != undefined) {
             this.$set(this, 'view_key_value', this.view_key)
