@@ -78,7 +78,7 @@
                             <td v-if="hide_checkbox === false">
                                 <v-checkbox
                                 v-model="selected[index]"
-                                :value="item"
+                                :value="item['id']"
                                 primary
                                 hide-details
                                 ></v-checkbox>
@@ -168,6 +168,7 @@ export default {
             loading: true,
             progress_colspan: 0,
             paginate: paginate_params,
+            before_page: 1,
             sortTypeAsc: true,
             view_key_value: 'id'
         }
@@ -181,7 +182,7 @@ export default {
             })
             .then(response => {
                 if (typeof response.data != 'undefined') {
-                    this.data = response.data
+                    this.$set(this, 'data', response.data)
                 }
                 if (typeof response.data[this.items_key] != 'undefined') {
                     let items = response.data[this.items_key]
@@ -199,15 +200,15 @@ export default {
                             items[e]['view_key_value'] = items[e][this.view_key_value]
                         }
                     }
-                    this.items = items
+                    this.$set(this, 'items', items)
                 }
                 if (typeof response.data.paginate != 'undefined') {
-                    this.paginate = response.data.paginate
+                    this.$set(this, 'paginate', response.data.paginate)
                 }
             })
             .catch(error => {
-                this.error = error
-                this.errored = true
+                this.$set(this, 'error', error)
+                this.$set(this, 'errored', true)
             })
             .finally(() => this.loading = false)
         },
@@ -237,9 +238,9 @@ export default {
     created() {
         //ste progress colspan
         if (this.hide_checkbox) {
-            this.progress_colspan = this.headers.length
+            this.$set(this, 'progress_colspan', this.headers.length)
         } else {
-            this.progress_colspan = this.headers.length + 1
+            this.$set(this, 'progress_colspan', this.headers.length + 1)
         }
     },
     mounted() {
@@ -248,17 +249,17 @@ export default {
         this.$set(this.params, 'limit', this.$store.state.paginate_limit)
         //set view key
         if (this.view_key != undefined) {
-            this.view_key_value = this.view_key
+            this.$set(this, 'view_key_value', this.view_key)
         }
         //get api
         this.getData()
         //format headers
         for (var i = 0; i < this.headers.length; i++) {
             if (typeof this.headers[i]['align'] == 'undefined') {
-                this.headers[i]['align'] = 'text-xs-left'
+                this.$set(this.headers[i], 'align', 'text-xs-left')
             } else {
                 if (this.headers[i]['align'].indexOf('text-xs-') == -1) {
-                    this.headers[i]['align'] = 'text-xs-' + this.headers[i]['align']
+                    this.$set(this.headers[i], 'align', 'text-xs-' + this.headers[i]['align'])
                 }
             }
         }
@@ -267,21 +268,27 @@ export default {
         selectAll(val) {
             if (val) {
                 for (var i = 0; i < this.items.length; i++) {
-                    this.selected.push(this.items[i])
+                    this.$set(this, 'selected', this.items[i].id)
                 }
             } else {
-                this.selected = []
+                this.$set(this, 'selected', [])
             }
         },
         params: {
-            handler() {
+            handler(val) {
                 //reset params
-                this.data = []
-                this.items = []
-                this.paginate = paginate_params
-                this.loading = true
-                this.selectAll = false
-                this.selected = []
+                this.$set(this, 'data', [])
+                this.$set(this, 'items', [])
+                this.$set(this, 'paginate', paginate_params)
+                this.$set(this, 'loading', true)
+                this.$set(this, 'selectAll', false)
+                this.$set(this, 'selected', [])
+                //set page
+                if (this.before_page == val.page) {
+                    val.page = 1
+                    this.$set(this.params, 'page', 1)
+                }
+                this.$set(this, 'before_page', val.page)
                 //get data
                 this.getData()
             },
