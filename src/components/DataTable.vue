@@ -13,7 +13,7 @@
 * @param Boolean hide_checkbox
 -->
 <template>
-    <v-flex mt-1 mb-4>
+    <v-flex mb-4>
         <div class="v-page-count" v-cloak>
             <div class="v-page-count-total">
                 <label class="select-label">件数</label>
@@ -70,7 +70,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(item, index) in items" :key="index" v-bind:class="[item.tr_class]">
+                        <tr
+                        v-for="(item, index) in items"
+                        :key="index"
+                        v-bind:class="[item.tr_class]"
+                        >
                             <td v-if="hide_checkbox === false">
                                 <v-checkbox
                                 v-model="selected[index]"
@@ -79,7 +83,12 @@
                                 hide-details
                                 ></v-checkbox>
                             </td>
-                            <td v-for="(h, index) in headers" :key="index" v-bind:class="[h.align]">
+                            <td
+                            v-for="(h, index) in headers"
+                            :key="index"
+                            v-bind:class="[h.align]"
+                            v-on:click="viewLink(item['view_key_value'])"
+                            >
                                 <template v-if="h.filter">
                                     {{item[h.value] | set_filter(h.filter)}}
                                 </template>
@@ -142,13 +151,15 @@ export default {
     props: {
         headers: Array,
         api_path: String,
+        view_route: String,
+        view_key: String,
         items_key: String,
         hide_checkbox: Boolean,
         params: Object
     },
     data () {
         return {
-            data: [],
+            data: {},
             items: [],
             selected: [],
             selectAll: false,
@@ -157,7 +168,8 @@ export default {
             loading: true,
             progress_colspan: 0,
             paginate: paginate_params,
-            sortTypeAsc: true
+            sortTypeAsc: true,
+            view_key_value: 'id'
         }
     },
     methods: {
@@ -172,7 +184,22 @@ export default {
                     this.data = response.data
                 }
                 if (typeof response.data[this.items_key] != 'undefined') {
-                    this.items = response.data[this.items_key]
+                    let items = response.data[this.items_key]
+                    //format items
+                    for (var e = 0; e < items.length; e++) {
+                        //set tr class
+                        if (typeof items[e]['tr_class'] == 'undefined') {
+                            items[e]['tr_class'] = ''
+                        } else {
+                            items[e]['tr_class'] = 'dt-' + items[e]['tr_class']
+                        }
+                        //set view key value
+                        items[e]['view_key_value'] = null;
+                        if (typeof items[e][this.view_key_value] != 'undefined') {
+                            items[e]['view_key_value'] = items[e][this.view_key_value]
+                        }
+                    }
+                    this.items = items
                 }
                 if (typeof response.data.paginate != 'undefined') {
                     this.paginate = response.data.paginate
@@ -200,6 +227,11 @@ export default {
             this.$set(this.params, 'page', 1)
             this.$set(this.params, 'sort', sort_field)
             this.$set(this.params, 'direction', direction)
+        },
+        viewLink(id) {
+            if (this.view_route != undefined && id != null) {
+                this.$router.push({ path: `/${this.view_route}${id}` })
+            }
         }
     },
     created() {
@@ -214,16 +246,12 @@ export default {
         //set params default
         this.$set(this.params, 'page', 1)
         this.$set(this.params, 'limit', this.$store.state.paginate_limit)
+        //set view key
+        if (this.view_key != undefined) {
+            this.view_key_value = this.view_key
+        }
         //get api
         this.getData()
-        //format items
-        for (var e = 0; e < this.items.length; e++) {
-            if (typeof this.items[e]['tr_class'] == 'undefined') {
-                this.items[e]['tr_class'] = ''
-            } else {
-                this.items[e]['tr_class'] = 'dt-' + this.items[e]['tr_class']
-            }
-        }
         //format headers
         for (var i = 0; i < this.headers.length; i++) {
             if (typeof this.headers[i]['align'] == 'undefined') {

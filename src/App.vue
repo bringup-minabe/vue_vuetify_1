@@ -105,8 +105,8 @@ export default {
         dialog: false,
         drawer: null,
         items: [
-            { icon: 'contacts', text: '顧客情報', path: 'customers' },
-            { icon: 'list_alt', text: 'メモ', path: 'memos' },
+            { icon: 'contacts', text: '顧客情報', path: '/customers' },
+            { icon: 'list_alt', text: 'メモ', path: '/memos' },
             {
                 icon: 'keyboard_arrow_up',
                 'icon-alt': 'keyboard_arrow_down',
@@ -120,7 +120,7 @@ export default {
                     { text: 'Other contacts', path: '/' }
                 ]
             },
-            { icon: 'settings', text: '設定', path: 'settings' },
+            { icon: 'settings', text: '設定', path: '/settings' },
         ]
     }),
     props: {
@@ -143,5 +143,44 @@ export default {
 }
 .dt-input-group {
     margin-top: 20px;
+}
+/**
+ * h
+ */
+.h-1 {
+    margin-bottom: 20px;
+}
+.h-2 {
+    margin-bottom: 15px;
+}
+/**
+ * table
+ */
+table {
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+.table-1 {
+    width: 100%;
+    th, td {
+        padding: 5px;
+        text-align: left;
+        vertical-align: top;
+        border-top: 1px solid #ddd;
+    }
+    th {
+        width: 120px;
+    }
+}
+.table-striped {
+    tr:nth-child(even) {
+        background-color: #FFF;
+    }
+}
+/**
+ * view
+ */
+.view-btn-group {
+    padding-bottom: 15px;
 }
 </style>
