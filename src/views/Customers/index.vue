@@ -1,13 +1,25 @@
 <template>
     <div class="customers">
         <h1>顧客情報</h1>
+        <div class="dt-input-group">
+            <v-flex xs12 sm3 md3>
+                <v-text-field
+                v-model="params.search"
+                placeholder="Search"
+                name="search"
+                solo
+                >
+                </v-text-field>
+            </v-flex>
+        </div>
         <DataTable
         :headers="headers"
+        :params="params"
         api_path="customers/index/index.json"
         items_key="customers"
         >
-    </DataTable>
-</div>
+        </DataTable>
+    </div>
 </template>
 
 <script>
@@ -28,12 +40,19 @@ export default {
                     value: 'full_name'
                 },
                 {
+                    text: 'ステータス',
+                    value: 'status'
+                },
+                {
                     text: '登録日時',
                     value: 'created',
                     filter: 'YMDHm',
                     sort_field: 'Customers.created'
                 }
-            ]
+            ],
+            params: {
+                search: ''
+            }
         }
     }
 }

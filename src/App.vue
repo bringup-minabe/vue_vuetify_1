@@ -141,4 +141,7 @@ export default {
         color: #FFF;
     }
 }
+.dt-input-group {
+    margin-top: 20px;
+}
 </style>

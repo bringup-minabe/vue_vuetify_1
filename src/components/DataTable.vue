@@ -13,7 +13,7 @@
 * @param Boolean hide_checkbox
 -->
 <template>
-    <v-flex mt-4 mb-4>
+    <v-flex mt-1 mb-4>
         <div class="v-page-count" v-cloak>
             <div class="v-page-count-total">
                 <label class="select-label">件数</label>
@@ -143,7 +143,8 @@ export default {
         headers: Array,
         api_path: String,
         items_key: String,
-        hide_checkbox: Boolean
+        hide_checkbox: Boolean,
+        params: Object
     },
     data () {
         return {
@@ -155,24 +156,12 @@ export default {
             errored: false,
             loading: true,
             progress_colspan: 0,
-            params: {
-                page: 1,
-                search: '',
-                limit: this.$store.state.paginate_limit
-            },
             paginate: paginate_params,
             sortTypeAsc: true
         }
     },
     methods: {
         getData() {
-            //reset params
-            this.data = []
-            this.items = []
-            this.paginate = paginate_params
-            this.loading = true
-            this.selectAll = false
-            this.selected = []
             //get data
             this.axios
             .get(process.env.VUE_APP_API_URL + this.api_path, {
@@ -220,10 +209,13 @@ export default {
         } else {
             this.progress_colspan = this.headers.length + 1
         }
-        //get api
-        this.getData()
     },
     mounted() {
+        //set params default
+        this.$set(this.params, 'page', 1)
+        this.$set(this.params, 'limit', this.$store.state.paginate_limit)
+        //get api
+        this.getData()
         //format items
         for (var e = 0; e < this.items.length; e++) {
             if (typeof this.items[e]['tr_class'] == 'undefined') {
@@ -255,6 +247,14 @@ export default {
         },
         params: {
             handler() {
+                //reset params
+                this.data = []
+                this.items = []
+                this.paginate = paginate_params
+                this.loading = true
+                this.selectAll = false
+                this.selected = []
+                //get data
                 this.getData()
             },
             deep: true
