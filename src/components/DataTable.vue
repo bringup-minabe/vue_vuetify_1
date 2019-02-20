@@ -196,10 +196,10 @@ export default {
             .finally(() => this.loading = false)
         },
         paginatePrev() {
-            this.params['page'] = this.paginate.page - 1
+            this.$set(this.params, 'page', this.paginate.page - 1)
         },
         paginateNext() {
-            this.params['page'] = this.paginate.page + 1
+            this.$set(this.params, 'page', this.paginate.page + 1)
         },
         sortData(sort_field) {
             //set sort
@@ -208,10 +208,9 @@ export default {
                 direction = 'desc'
             }
             //get data
-            this.params['page'] = 1
-            this.params['sort'] = sort_field
-            this.params['direction'] = direction
-            this.getData()
+            this.$set(this.params, 'page', 1)
+            this.$set(this.params, 'sort', sort_field)
+            this.$set(this.params, 'direction', direction)
         }
     },
     created() {
