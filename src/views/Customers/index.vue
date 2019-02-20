@@ -52,8 +52,6 @@ export default {
                 }
             ],
             params: {
-                page: 1,
-                limit: this.$store.state.paginate_limit,
                 search: ''
             }
         }

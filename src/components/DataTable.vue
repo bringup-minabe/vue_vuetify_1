@@ -170,15 +170,21 @@ export default {
             paginate: paginate_params,
             before_page: 1,
             sortTypeAsc: true,
-            view_key_value: 'id'
+            view_key_value: 'id',
+            page: 1,
+            limit: this.$store.state.paginate_limit,
         }
     },
     methods: {
         getData() {
+            //set params
+            let api_params = this.params
+            api_params['page'] = this.page
+            api_params['limit'] = this.limit
             //get data
             this.axios
             .get(process.env.VUE_APP_API_URL + this.api_path, {
-                params: this.params
+                params: api_params
             })
             .then(response => {
                 if (typeof response.data != 'undefined') {
@@ -212,11 +218,23 @@ export default {
             })
             .finally(() => this.loading = false)
         },
+        resetParams() {
+            // this.$set(this, 'data', [])
+            // this.$set(this, 'items', [])
+            // this.$set(this, 'paginate', paginate_params)
+            this.$set(this, 'loading', true)
+            this.$set(this, 'selectAll', false)
+            this.$set(this, 'selected', [])
+        },
         paginatePrev() {
-            this.$set(this.params, 'page', this.paginate.page - 1)
+            this.$set(this, 'page', this.paginate.page - 1)
+            this.resetParams()
+            this.getData()
         },
         paginateNext() {
-            this.$set(this.params, 'page', this.paginate.page + 1)
+            this.$set(this, 'page', this.paginate.page + 1)
+            this.resetParams()
+            this.getData()
         },
         sortData(sort_field) {
             //set sort
@@ -274,16 +292,11 @@ export default {
         params: {
             handler(val) {
                 //reset params
-                this.$set(this, 'data', [])
-                this.$set(this, 'items', [])
-                this.$set(this, 'paginate', paginate_params)
-                this.$set(this, 'loading', true)
-                this.$set(this, 'selectAll', false)
-                this.$set(this, 'selected', [])
+                this.resetParams()
                 //set page
                 if (this.before_page == val.page) {
                     val.page = 1
-                    this.$set(this.params, 'page', 1)
+                    this.$set(this, 'page', 1)
                 }
                 this.$set(this, 'before_page', val.page)
                 //get data
