@@ -10,7 +10,9 @@
 *  align: String 'center', 'left', 'right'
 * @param Array items
 *  tr_class: String tr background color 'success', 'danger', 'warning', 'info'
+* @param Object query
 * @param Boolean hide_checkbox
+* @param Boolean url_query
 -->
 <template>
     <v-flex mb-4>
@@ -154,7 +156,8 @@ export default {
         view_key: String,
         items_key: String,
         hide_checkbox: Boolean,
-        params: Object
+        query: Object,
+        url_query: Boolean
     },
     data () {
         return {
@@ -176,14 +179,24 @@ export default {
     },
     methods: {
         getData() {
-            //set params
-            let api_params = this.params
-            api_params['page'] = this.page
-            api_params['limit'] = this.limit
+            //set query
+            let api_query = {}
+            let api_page = 1
+            if (this.url_query) {
+                api_query = this.$route.query
+                if (this.$route.query.page != undefined) {
+                    api_page = this.$route.query.page
+                }
+            } else {
+                api_query = this.query
+                api_page = this.page
+            }
+            api_query['limit'] = this.limit
+            api_query['page'] = api_page
             //get data
             this.axios
             .get(process.env.VUE_APP_API_URL + this.api_path, {
-                params: api_params
+                params: api_query
             })
             .then(response => {
                 if (typeof response.data != 'undefined') {
@@ -217,23 +230,16 @@ export default {
             })
             .finally(() => this.loading = false)
         },
-        resetParams() {
-            // this.$set(this, 'data', [])
-            // this.$set(this, 'items', [])
-            // this.$set(this, 'paginate', paginate_params)
+        resetSelected() {
             this.$set(this, 'loading', true)
             this.$set(this, 'selectAll', false)
             this.$set(this, 'selected', [])
         },
         paginatePrev() {
-            this.$set(this, 'page', this.paginate.page - 1)
-            this.resetParams()
-            this.getData()
+            this.$set(this.query, 'page', this.paginate.page - 1)
         },
         paginateNext() {
-            this.$set(this, 'page', this.paginate.page + 1)
-            this.resetParams()
-            this.getData()
+            this.$set(this.query, 'page', this.paginate.page + 1)
         },
         sortData(sort_field) {
             //set sort
@@ -241,10 +247,9 @@ export default {
             if (this.paginate.direction == 'asc') {
                 direction = 'desc'
             }
-            //get data
-            this.$set(this.params, 'page', 1)
-            this.$set(this.params, 'sort', sort_field)
-            this.$set(this.params, 'direction', direction)
+            this.$set(this.query, 'page', 1)
+            this.$set(this.query, 'sort', sort_field)
+            this.$set(this.query, 'direction', direction)
         },
         viewLink(id) {
             if (this.view_route != undefined && id != null) {
@@ -253,6 +258,28 @@ export default {
         }
     },
     created() {
+        // let url_query = Object.assign({}, this.params);
+        // url_query['page'] = 1
+        //set store query
+        if (this.url_query && Object.keys(this.$store.state.url_query).length != 0) {
+            // if (this.$store.state.url_query.sort != undefined) {
+            //     this.$set(this.query, 'sort', this.$store.state.url_query.sort)
+            // }
+            // if (this.$store.state.url_query.direction != undefined) {
+            //     this.$set(this.query, 'direction', this.$store.state.url_query.direction)
+            // }
+            // this.$set(this, 'page', this.$store.state.url_query.page)
+            // this.$set(this, 'limit', this.$store.state.url_query.limit)
+            // //reset store query
+            // this.$store.commit('resetUrlQuery')
+        } else {
+            // this.$set(this.query, 'page', this.page)
+            // this.$set(this.query, 'limit', this.limit)
+        }
+        //push query
+        if (this.url_query) {
+            this.$router.push({query:this.query})
+        }
         //ste progress colspan
         if (this.hide_checkbox) {
             this.$set(this, 'progress_colspan', this.headers.length)
@@ -288,21 +315,31 @@ export default {
                 this.$set(this, 'selected', [])
             }
         },
-        params: {
+        query: {
             handler(val) {
-                //reset params
-                this.resetParams()
-                //set page
-                if (this.before_page == val.page) {
-                    val.page = 1
-                    this.$set(this, 'page', 1)
+                //reset selected
+                this.resetSelected()
+                if (this.url_query) {
+                    this.$router.push({query:this.query})
+                    this.$store.commit('setUrlQuery', this.query)
+                } else {
+                    //set page
+                    if (this.before_page == val.page) {
+                        val.page = 1
+                        this.$set(this, 'page', 1)
+                    }
+                    this.$set(this, 'before_page', val.page)
                 }
-                this.$set(this, 'before_page', val.page)
                 //get data
                 this.getData()
             },
             deep: true
         },
+        '$route' (to, from) {
+            if (Object.keys(to.query).length == 0) {
+                console.log(1);
+            }
+        }
     }
 }
 </script>

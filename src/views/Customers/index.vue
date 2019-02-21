@@ -4,7 +4,7 @@
         <div class="dt-input-group">
             <v-flex xs12 sm3 md3>
                 <v-text-field
-                v-model="params.search"
+                v-model="query.search"
                 placeholder="Search"
                 name="search"
                 solo
@@ -14,10 +14,11 @@
         </div>
         <DataTable
         :headers="headers"
-        :params="params"
+        :query="query"
         api_path="customers/index/index.json"
         view_route="customers/view/"
         items_key="customers"
+        url_query
         >
         </DataTable>
     </div>
@@ -51,9 +52,14 @@ export default {
                     sort_field: 'Customers.created'
                 }
             ],
-            params: {
+            query: {
                 search: ''
             }
+        }
+    },
+    created() {
+        if (Object.keys(this.$store.state.url_query).length != 0) {
+            this.query.search = this.$store.state.url_query.search
         }
     }
 }
