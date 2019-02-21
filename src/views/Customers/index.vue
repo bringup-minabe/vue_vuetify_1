@@ -15,6 +15,7 @@
         <DataTable
         :headers="headers"
         :query="query"
+        :default_query="default_query"
         api_path="customers/index/index.json"
         view_route="customers/view/"
         items_key="customers"
@@ -54,12 +55,15 @@ export default {
             ],
             query: {
                 search: ''
+            },
+            default_query: {
+                search: ''
             }
         }
     },
     created() {
         if (Object.keys(this.$store.state.url_query).length != 0) {
-            this.query.search = this.$store.state.url_query.search
+            // this.query.search = this.$store.state.url_query.search
         }
     }
 }

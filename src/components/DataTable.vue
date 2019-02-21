@@ -157,6 +157,7 @@ export default {
         items_key: String,
         hide_checkbox: Boolean,
         query: Object,
+        default_query: Object,
         url_query: Boolean
     },
     data () {
@@ -174,7 +175,7 @@ export default {
             sortTypeAsc: true,
             view_key_value: 'id',
             page: 1,
-            limit: this.$store.state.paginate_limit,
+            limit: this.$store.state.paginate_limit
         }
     },
     methods: {
@@ -319,25 +320,30 @@ export default {
             handler(val) {
                 //reset selected
                 this.resetSelected()
+                //set page
+                if (this.before_page == val.page) {
+                    val.page = 1
+                    this.$set(this, 'page', 1)
+                }
+                this.$set(this, 'before_page', val.page)
+                //set url query
                 if (this.url_query) {
                     this.$router.push({query:this.query})
                     this.$store.commit('setUrlQuery', this.query)
-                } else {
-                    //set page
-                    if (this.before_page == val.page) {
-                        val.page = 1
-                        this.$set(this, 'page', 1)
-                    }
-                    this.$set(this, 'before_page', val.page)
                 }
                 //get data
                 this.getData()
             },
             deep: true
         },
-        '$route' (to, from) {
-            if (Object.keys(to.query).length == 0) {
-                console.log(1);
+        '$route' (to) {
+            if (this.url_query && Object.keys(to.query).length == 0) {
+                this.resetSelected()
+                let init_query = Object.assign({}, this.default_query);
+                init_query['page'] = 1
+                for(let k of Object.keys(init_query)) {
+                    this.$set(this.query, k, init_query[k])
+                }
             }
         }
     }
