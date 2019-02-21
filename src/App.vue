@@ -105,7 +105,11 @@ export default {
         dialog: false,
         drawer: null,
         items: [
-            { icon: 'contacts', text: '顧客情報', path: '/customers' },
+            {
+                icon: 'contacts',
+                text: '顧客情報',
+                path: '/customers'
+            },
             { icon: 'list_alt', text: 'メモ', path: '/memos' },
             {
                 icon: 'keyboard_arrow_up',

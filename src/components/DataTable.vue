@@ -338,7 +338,6 @@ export default {
         },
         '$route' (to) {
             if (this.url_query && Object.keys(to.query).length == 0) {
-                this.resetSelected()
                 let init_query = Object.assign({}, this.default_query);
                 init_query['page'] = 1
                 for(let k of Object.keys(init_query)) {
