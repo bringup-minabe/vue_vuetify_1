@@ -29,11 +29,11 @@
                     <thead>
                         <tr>
                             <th v-if="hide_checkbox === false" style="width: 15px;">
-                                <v-checkbox
+                                <input
                                 v-model="selectAll"
-                                primary
-                                hide-details
-                                ></v-checkbox>
+                                type="checkbox"
+                                name="select_all"
+                                value="">
                             </th>
                             <th v-for="(h, index) in headers" :key="index" v-bind:class="[h.align]">
                                 <span v-if="typeof h.sort_field != 'undefined'">
@@ -76,12 +76,11 @@
                         v-bind:class="[item.tr_class]"
                         >
                             <td v-if="hide_checkbox === false">
-                                <v-checkbox
-                                v-model="selected[index]"
-                                :value="item['id']"
-                                primary
-                                hide-details
-                                ></v-checkbox>
+                                <input
+                                v-model="selected"
+                                :value="item"
+                                type="checkbox"
+                                >
                             </td>
                             <td
                             v-for="(h, index) in headers"
@@ -283,7 +282,7 @@ export default {
         selectAll(val) {
             if (val) {
                 for (var i = 0; i < this.items.length; i++) {
-                    this.$set(this, 'selected', this.items[i].id)
+                    this.$set(this.selected, i, this.items[i])
                 }
             } else {
                 this.$set(this, 'selected', [])
