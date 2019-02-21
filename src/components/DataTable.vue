@@ -343,6 +343,7 @@ export default {
                 for(let k of Object.keys(init_query)) {
                     this.$set(this.query, k, init_query[k])
                 }
+                this.$router.push({query:this.query})
             }
         }
     }
