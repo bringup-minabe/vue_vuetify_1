@@ -4,10 +4,13 @@
         <div class="dt-input-group">
             <v-flex xs12 sm3 md3>
                 <v-text-field
-                v-model="query.search"
+                v-model="query_input.search"
                 placeholder="Search"
                 name="search"
                 solo
+                append-icon="search"
+                @click:append="searchAction"
+                v-on:keyup.enter="searchAction"
                 >
                 </v-text-field>
             </v-flex>
@@ -26,10 +29,15 @@
 </template>
 
 <script>
+let queries = {
+    search: ''
+}
 import DataTable from "../../components/DataTable.vue"
+import IndexData from "../../mixins/IndexData"
 export default {
     name: 'customers',
     components: {DataTable},
+    mixins: [IndexData],
     data () {
         return {
             headers: [
@@ -52,14 +60,11 @@ export default {
                     filter: 'YMDHm',
                     sort_field: 'Customers.created'
                 }
-            ],
-            query: {
-                search: ''
-            },
-            default_query: {
-                search: ''
-            }
+            ]
         }
+    },
+    created() {
+        this.setQueries(queries)
     }
 }
 </script>
