@@ -60,11 +60,6 @@ export default {
                 search: ''
             }
         }
-    },
-    created() {
-        if (Object.keys(this.$store.state.url_query).length != 0) {
-            // this.query.search = this.$store.state.url_query.search
-        }
     }
 }
 </script>

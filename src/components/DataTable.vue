@@ -259,27 +259,15 @@ export default {
         }
     },
     created() {
-        // let url_query = Object.assign({}, this.params);
-        // url_query['page'] = 1
-        //set store query
-        if (this.url_query && Object.keys(this.$store.state.url_query).length != 0) {
-            // if (this.$store.state.url_query.sort != undefined) {
-            //     this.$set(this.query, 'sort', this.$store.state.url_query.sort)
-            // }
-            // if (this.$store.state.url_query.direction != undefined) {
-            //     this.$set(this.query, 'direction', this.$store.state.url_query.direction)
-            // }
-            // this.$set(this, 'page', this.$store.state.url_query.page)
-            // this.$set(this, 'limit', this.$store.state.url_query.limit)
-            // //reset store query
-            // this.$store.commit('resetUrlQuery')
-        } else {
-            // this.$set(this.query, 'page', this.page)
-            // this.$set(this.query, 'limit', this.limit)
-        }
-        //push query
+        //set query
         if (this.url_query) {
-            this.$router.push({query:this.query})
+            if (Object.keys(this.$route.query).length != 0) {
+                for(let k of Object.keys(this.query)) {
+                    if (this.$route.query[k] != undefined) {
+                        this.query[k] = this.$route.query[k]
+                    }
+                }
+            }
         }
         //ste progress colspan
         if (this.hide_checkbox) {
@@ -329,7 +317,6 @@ export default {
                 //set url query
                 if (this.url_query) {
                     this.$router.push({query:this.query})
-                    this.$store.commit('setUrlQuery', this.query)
                 }
                 //get data
                 this.getData()
@@ -337,13 +324,13 @@ export default {
             deep: true
         },
         '$route' (to) {
+            //set init page query
             if (this.url_query && Object.keys(to.query).length == 0) {
                 let init_query = Object.assign({}, this.default_query);
                 init_query['page'] = 1
                 for(let k of Object.keys(init_query)) {
                     this.$set(this.query, k, init_query[k])
                 }
-                this.$router.push({query:this.query})
             }
         }
     }
