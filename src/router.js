@@ -28,7 +28,7 @@ export default new Router({
             component: CustomersIndex
         },
         {
-            path: '/customers/view/:id',
+            path: '/customers/:id',
             name: 'customers_view',
             component: CustomersView
         },

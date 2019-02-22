@@ -254,7 +254,7 @@ export default {
         },
         viewLink(id) {
             if (this.view_route != undefined && id != null) {
-                this.$router.push({ path: `/${this.view_route}${id}` })
+                this.$router.push({ path: `/${this.view_route}/${id}` })
             }
         }
     },

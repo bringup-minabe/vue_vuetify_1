@@ -17,7 +17,7 @@
         :query="query"
         :default_query="default_query"
         api_path="customers/index/index.json"
-        view_route="customers/view/"
+        view_route="customers"
         items_key="customers"
         url_query
         >
