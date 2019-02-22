@@ -238,9 +238,11 @@ export default {
         },
         paginatePrev() {
             this.$set(this.query, 'page', this.paginate.page - 1)
+            window.scrollTo(0, this.$parent.$el.offsetTop)
         },
         paginateNext() {
             this.$set(this.query, 'page', this.paginate.page + 1)
+            window.scrollTo(0, this.$parent.$el.offsetTop)
         },
         sortData(sort_field) {
             //set sort
