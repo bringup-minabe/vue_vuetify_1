@@ -237,11 +237,19 @@ export default {
             this.$set(this, 'selected', [])
         },
         paginatePrev() {
-            this.$set(this.query, 'page', this.paginate.page - 1)
+            if (this.url_query) {
+                this.$set(this.query, 'page', this.paginate.page - 1)
+            } else {
+                this.$set(this, 'page', this.paginate.page - 1)
+            }
             window.scrollTo(0, this.$parent.$el.offsetTop)
         },
         paginateNext() {
-            this.$set(this.query, 'page', this.paginate.page + 1)
+            if (this.url_query) {
+                this.$set(this.query, 'page', this.paginate.page + 1)
+            } else {
+                this.$set(this, 'page', this.paginate.page + 1)
+            }
             window.scrollTo(0, this.$parent.$el.offsetTop)
         },
         sortData(sort_field) {
@@ -324,6 +332,12 @@ export default {
                 this.getData()
             },
             deep: true
+        },
+        page(val) {
+            //reset selected
+            this.resetSelected()
+            //get data
+            this.getData()
         },
         '$route' (to) {
             //set init page query
