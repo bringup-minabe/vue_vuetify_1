@@ -32,6 +32,11 @@ export default {
         '$route' (to) {
             if (Object.keys(to.query).length == 0) {
                 this.setQueyValues()
+                let init_query = Object.assign({}, this.default_query);
+                init_query['page'] = 1
+                for(let k of Object.keys(init_query)) {
+                    this.$set(this.query, k, init_query[k])
+                }
             }
         }
     }
