@@ -5,7 +5,7 @@
         :clipped="$vuetify.breakpoint.lgAndUp"
         fixed
         app
-        width="250"
+        width="200"
         >
         <v-list dense>
             <template v-for="item in items">
@@ -139,6 +139,12 @@ export default {
 </script>
 
 <style lang="scss">
+.theme--light.application {
+    background: #FFF!important;
+}
+.theme--light.v-navigation-drawer {
+    background-color: #fafafa!important;
+}
 .v-toolbar__title {
     a {
         text-decoration: none;
@@ -185,6 +191,20 @@ table {
  * view
  */
 .view-btn-group {
-    padding-bottom: 15px;
+    padding-bottom: 25px;
+    .v-btn {
+        margin-left: 0;
+    }
+}
+/**
+ * form
+ */
+form {
+    .submit-area {
+        margin-top: 25px;
+        .v-btn {
+            margin-left: 0;
+        }
+    }
 }
 </style>
