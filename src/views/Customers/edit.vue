@@ -10,13 +10,28 @@
                 <v-btn @click="submit">保存</v-btn>
             </div>
             <form>
+                
+                <error-alert
+                v-if="errored"
+                :error_msg="error_msg"
+                ></error-alert>
+
+                <v-flex xs12 sm3 md3 d-inline-flex>
+                    <v-text-field
+                    v-model="inputs.last_name"
+                    label="姓"
+                    required
+                    ></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm3 md3 d-inline-flex>
+                    <v-text-field
+                    v-model="inputs.first_name"
+                    label="名"
+                    required
+                    ></v-text-field>
+                </v-flex>
                 <v-text-field
-                v-model="inputs.customer.full_name"
-                label="氏名"
-                required
-                ></v-text-field>
-                <v-text-field
-                v-model="inputs.customer.email"
+                v-model="inputs.email"
                 label="Email"
                 required
                 ></v-text-field>
@@ -31,32 +46,31 @@
 
 <script>
 import HttpMixin from "../../mixins/HttpMixin"
-import Filter from "../../mixins/Filter"
+import Form from "../../mixins/Form"
 import Progress from "../../components/Progress.vue"
+import ErrorAlert from "../../components/ErrorAlert.vue"
 export default {
     name: 'customers-edit',
-    mixins: [HttpMixin, Filter],
+    mixins: [HttpMixin, Form],
     components: {
-        'progress-con': Progress
+        'progress-con': Progress,
+        'error-alert': ErrorAlert
     },
     data () {
         return {
             data: {},
             inputs: {
-                customer: {
-                    full_name: '',
-                    email: '',
-                }
-            },
-            error: {},
-            errored: false,
-            loading: true
+                first_name: '',
+                last_name: '',
+                email: '',
+            }
         }
     },
-    methods: {
-        submit() {
-            console.log(1);
-        }
+    created() {
+        //set form action
+        this.$set(this, 'form_action', 'customers/edit/' + this.$route.params.id)
+        //set redirect
+        this.$set(this, 'redirect', '/customers')
     },
     mounted() {
         if (this.$route.params.id != undefined) {
@@ -67,10 +81,8 @@ export default {
                 if (typeof response.data != 'undefined') {
                     this.data = response.data
                     for(let k of Object.keys(this.inputs)) {
-                        for(let inp of Object.keys(this.inputs[k])) {
-                            if (response.data[k] != undefined && response.data[k][inp] != undefined) {
-                                this.$set(this.inputs[k], inp, response.data[k][inp])
-                            }
+                        if (response.data['customer'] != undefined && response.data['customer'][k] != undefined) {
+                            this.$set(this.inputs, k, response.data['customer'][k])
                         }
                     }
                 }
