@@ -1,6 +1,6 @@
 <template>
     <div id="customers-view">
-        <h1 class="h-2">顧客情報 詳細</h1>
+        <h1 class="h-2">{{this.$parent.title}} 詳細</h1>
         <div class="view-btn-group">
             <v-btn small @click="$router.go(-1)">戻る</v-btn>
             <v-btn small @click="$router.push(`/customers/${id}/edit`)">編集</v-btn>

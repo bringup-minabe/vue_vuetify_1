@@ -6,7 +6,11 @@
 
 <script>
 export default {
-
+    data() {
+        return {
+            title: '顧客情報'
+        }
+    }
 }
 </script>
 

@@ -1,6 +1,6 @@
 <template>
     <div id="customers-edit">
-        <h1 class="h-2">顧客情報 編集</h1>
+        <h1 class="h-2">{{this.$parent.title}} 編集</h1>
         <div class="view-btn-group">
             <v-btn small @click="$router.go(-1)">戻る</v-btn>
         </div>

@@ -1,6 +1,6 @@
 <template>
     <div id="customers-index">
-        <h1 class="h-1">顧客情報</h1>
+        <h1 class="h-1">{{this.$parent.title}}</h1>
         <div class="dt-input-group">
             <v-flex xs12 sm3 md3>
                 <v-text-field
