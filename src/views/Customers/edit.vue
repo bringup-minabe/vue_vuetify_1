@@ -10,7 +10,7 @@
                 <v-btn @click="submit">保存</v-btn>
             </div>
             <form>
-                
+
                 <error-alert
                 v-if="errored"
                 :error_msg="error_msg"
@@ -88,8 +88,8 @@ export default {
                 }
             })
             .catch(error => {
-                this.error = error
-                this.errored = true
+                this.$set(this, 'error_msg', error.message)
+                this.$set(this, 'errored', true)
             })
             .finally(() => this.loading = false)
         }
