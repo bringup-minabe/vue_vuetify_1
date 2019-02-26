@@ -1,5 +1,5 @@
 <template>
-    <div class="customers">
+    <div id="customers-index">
         <h1 class="h-1">顧客情報</h1>
         <div class="dt-input-group">
             <v-flex xs12 sm3 md3>
@@ -35,7 +35,7 @@ let queries = {
 import DataTable from "../../components/DataTable.vue"
 import IndexData from "../../mixins/IndexData"
 export default {
-    name: 'customers',
+    name: 'customers-index',
     components: {DataTable},
     mixins: [IndexData],
     data () {
