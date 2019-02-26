@@ -1,25 +1,30 @@
 <template>
     <div id="customers-edit">
         <h1 class="h-2">{{this.$parent.title}} 編集</h1>
-        <div class="view-btn-group">
-            <v-btn small @click="$router.go(-1)">戻る</v-btn>
-        </div>
         <div v-if="loading">
             <progress-con></progress-con>
         </div>
         <div v-else>
-            <table class="table-1 table-striped">
-                <tbody>
-                    <tr>
-                        <th>氏名</th>
-                        <td>{{data.customer.full_name}}</td>
-                    </tr>
-                    <tr>
-                        <th>Email</th>
-                        <td>{{data.customer.email}}</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="view-btn-group">
+                <v-btn @click="$router.go(-1)">キャンセル</v-btn>
+                <v-btn @click="submit">保存</v-btn>
+            </div>
+            <form>
+                <v-text-field
+                v-model="inputs.customer.full_name"
+                label="氏名"
+                required
+                ></v-text-field>
+                <v-text-field
+                v-model="inputs.customer.email"
+                label="Email"
+                required
+                ></v-text-field>
+                <div class="submit-area">
+                    <v-btn @click="$router.go(-1)">キャンセル</v-btn>
+                    <v-btn @click="submit">保存</v-btn>
+                </div>
+          </form>
         </div>
     </div>
 </template>
@@ -37,9 +42,20 @@ export default {
     data () {
         return {
             data: {},
+            inputs: {
+                customer: {
+                    full_name: '',
+                    email: '',
+                }
+            },
             error: {},
             errored: false,
             loading: true
+        }
+    },
+    methods: {
+        submit() {
+            console.log(1);
         }
     },
     mounted() {
@@ -50,6 +66,13 @@ export default {
             .then(response => {
                 if (typeof response.data != 'undefined') {
                     this.data = response.data
+                    for(let k of Object.keys(this.inputs)) {
+                        for(let inp of Object.keys(this.inputs[k])) {
+                            if (response.data[k] != undefined && response.data[k][inp] != undefined) {
+                                this.$set(this.inputs[k], inp, response.data[k][inp])
+                            }
+                        }
+                    }
                 }
             })
             .catch(error => {

@@ -1,14 +1,14 @@
 <template>
     <div id="customers-view">
         <h1 class="h-2">{{this.$parent.title}} 詳細</h1>
-        <div class="view-btn-group">
-            <v-btn small @click="$router.go(-1)">戻る</v-btn>
-            <v-btn small @click="$router.push(`/customers/${id}/edit`)">編集</v-btn>
-        </div>
         <div v-if="loading">
             <progress-con></progress-con>
         </div>
         <div v-else>
+            <div class="view-btn-group">
+                <v-btn @click="$router.go(-1)">戻る</v-btn>
+                <v-btn @click="$router.push(`/customers/${id}/edit`)">編集</v-btn>
+            </div>
             <table class="table-1 table-striped">
                 <tbody>
                     <tr>
