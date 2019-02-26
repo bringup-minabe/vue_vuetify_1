@@ -26,18 +26,22 @@ export default new Router({
         },
         {
             path: '/customers',
+            name: 'customers',
             component: CustomersRoot,
             children: [
                 {
                     path: '',
+                    name: 'customers_index',
                     component: CustomersIndex
                 },
                 {
                     path: ':id',
+                    name: 'customers_view',
                     component: CustomersView
                 },
                 {
                     path: ':id/edit',
+                    name: 'customers_edit',
                     component: CustomersEdit
                 }
             ]
