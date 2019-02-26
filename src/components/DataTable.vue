@@ -333,7 +333,7 @@ export default {
             },
             deep: true
         },
-        page(val) {
+        page() {
             //reset selected
             this.resetSelected()
             //get data
