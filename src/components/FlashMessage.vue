@@ -30,7 +30,7 @@ export default {
         }
     },
     mounted() {
-        if (this.type != '') {
+        if (this.fl_type != '') {
             this.$store.commit('destroyFlash')
         }
     }
