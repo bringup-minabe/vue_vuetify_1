@@ -1,6 +1,6 @@
 <template>
-    <div id="customers-edit">
-        <h1 class="h-2">{{this.$parent.title}} 編集</h1>
+    <div id="customers-add">
+        <h1 class="h-2">{{this.$parent.title}} 追加</h1>
         <div v-if="loading">
             <progress-con></progress-con>
         </div>
@@ -56,7 +56,7 @@ import Form from "../../mixins/Form"
 import Progress from "../../components/Progress.vue"
 import ErrorAlert from "../../components/ErrorAlert.vue"
 export default {
-    name: 'customers-edit',
+    name: 'customers-add',
     mixins: [HttpMixin, Form],
     components: {
         'progress-con': Progress,
@@ -80,31 +80,10 @@ export default {
     },
     created() {
         //set form action
-        this.$set(this, 'form_action', 'customers/edit/' + this.$route.params.id)
+        this.$set(this, 'form_action', 'customers/add/')
         //set redirect
         this.$set(this, 'redirect', '/customers')
-    },
-    mounted() {
-        if (this.$route.params.id != undefined) {
-            //get data
-            this.axios
-            .get(process.env.VUE_APP_API_URL + 'customers/edit/' + this.$route.params.id + '/index.json')
-            .then(response => {
-                if (typeof response.data != 'undefined') {
-                    this.data = response.data
-                    for(let k of Object.keys(this.inputs)) {
-                        if (response.data['customer'] != undefined && response.data['customer'][k] != undefined) {
-                            this.$set(this.inputs, k, response.data['customer'][k])
-                        }
-                    }
-                }
-            })
-            .catch(error => {
-                this.$set(this, 'error_msg', error.message)
-                this.$set(this, 'errored', true)
-            })
-            .finally(() => this.loading = false)
-        }
+        this.$set(this, 'loading', false)
     }
 }
 </script>

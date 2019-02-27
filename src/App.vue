@@ -151,14 +151,23 @@ export default {
         color: #FFF;
     }
 }
+.dt-group {
+    padding-bottom: 10px;
+    .v-text-field__details {
+        display: none!important;
+    }
+    .v-btn {
+        margin-left: 0!important;
+    }
+}
 .dt-input-group {
-    margin-top: 20px;
+    margin-bottom: 10px;
 }
 /**
  * h
  */
 .h-1 {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 .h-2 {
     margin-bottom: 15px;
@@ -186,6 +195,24 @@ table {
     tr:nth-child(even) {
         background-color: #FFF;
     }
+}
+/**
+ * btn
+ */
+.btn-add {
+    background-color: #2196f3 !important;
+    border-color: #2196f3 !important;
+    color: #FFF!important;
+}
+.btn-save {
+    background-color: #2196f3 !important;
+    border-color: #2196f3 !important;
+    color: #FFF!important;
+}
+.btn-edit {
+    background-color: #4caf50!important;
+    border-color: #4caf50!important;
+    color: #FFF!important;
 }
 /**
  * view

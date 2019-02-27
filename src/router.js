@@ -3,10 +3,14 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 
 import About from './views/About.vue'
+
+//Customers
 import CustomersRoot from './views/Customers/root.vue'
 import CustomersIndex from './views/Customers/index.vue'
+import CustomersAdd from './views/Customers/add.vue'
 import CustomersView from './views/Customers/view.vue'
 import CustomersEdit from './views/Customers/edit.vue'
+
 import MemosIndex from './views/Memos/index.vue'
 import Settings from './views/Settings.vue'
 
@@ -35,6 +39,11 @@ export default new Router({
                     component: CustomersIndex
                 },
                 {
+                    path: 'add',
+                    name: 'customers_add',
+                    component: CustomersAdd
+                },
+                {
                     path: ':id',
                     name: 'customers_view',
                     component: CustomersView
@@ -43,7 +52,7 @@ export default new Router({
                     path: ':id/edit',
                     name: 'customers_edit',
                     component: CustomersEdit
-                }
+                },
             ]
         },
         {

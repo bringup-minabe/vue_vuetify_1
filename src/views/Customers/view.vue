@@ -6,8 +6,8 @@
         </div>
         <div v-else>
             <div class="view-btn-group">
-                <v-btn @click="$router.go(-1)">戻る</v-btn>
-                <v-btn @click="$router.push(`/customers/${id}/edit`)">編集</v-btn>
+                <v-btn color="btn-back" @click="$router.go(-1)">戻る</v-btn>
+                <v-btn color="btn-edit" @click="$router.push(`/customers/${id}/edit`)">編集</v-btn>
             </div>
             <table class="table-1 table-striped">
                 <tbody>

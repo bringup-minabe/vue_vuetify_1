@@ -1,19 +1,24 @@
 <template>
     <div id="customers-index">
         <h1 class="h-1">{{this.$parent.title}}</h1>
-        <div class="dt-input-group">
-            <v-flex xs12 sm3 md3>
-                <v-text-field
-                v-model="query_input.search"
-                placeholder="Search"
-                name="search"
-                solo
-                append-icon="search"
-                @click:append="searchAction"
-                v-on:keyup.enter="searchAction"
-                >
-                </v-text-field>
-            </v-flex>
+        <div class="dt-group">
+            <div class="dt-input-group">
+                <v-btn color="btn-add" @click="$router.push(`/customers/add`)">追加</v-btn>
+            </div>
+            <div class="dt-input-group">
+                <v-flex xs12 sm3 md3>
+                    <v-text-field
+                    v-model="query_input.search"
+                    placeholder="Search"
+                    name="search"
+                    solo
+                    append-icon="search"
+                    @click:append="searchAction"
+                    v-on:keyup.enter="searchAction"
+                    >
+                    </v-text-field>
+                </v-flex>
+            </div>
         </div>
         <DataTable
         :headers="headers"
