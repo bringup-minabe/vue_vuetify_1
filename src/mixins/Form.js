@@ -21,10 +21,19 @@ export default {
                     this.axios.post(process.env.VUE_APP_API_URL + this.form_action, this.inputs)
                     .then(response => {
                         if (response.status === 200) {
+                            //set flash message
+                            this.$store.commit('setFlash', {
+                                type: 'success',
+                                msg: '保存しました'
+                            })
                             this.$router.push(this.redirect)
                         } else {
-                            // console.log(response)
-                            this.$set(this, 'submited', false)
+                            //set flash message
+                            this.$store.commit('setFlash', {
+                                type: 'error',
+                                msg: '保存できませんでした'
+                            })
+                            this.$router.push(this.redirect)
                         }
                     })
                     .catch(error => {

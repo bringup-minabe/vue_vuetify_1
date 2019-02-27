@@ -1,5 +1,6 @@
 <template>
     <div id="customers-index">
+        <FlashMessage></FlashMessage>
         <h1 class="h-1">{{this.$parent.title}}</h1>
         <div class="dt-group">
             <div class="dt-input-group">
@@ -37,11 +38,12 @@
 let queries = {
     search: ''
 }
+import FlashMessage from "../../components/FlashMessage.vue"
 import DataTable from "../../components/DataTable.vue"
 import IndexData from "../../mixins/IndexData"
 export default {
     name: 'customers-index',
-    components: {DataTable},
+    components: {DataTable, FlashMessage},
     mixins: [IndexData],
     data () {
         return {
