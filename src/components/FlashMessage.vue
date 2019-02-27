@@ -33,6 +33,13 @@ export default {
         if (this.fl_type != '') {
             this.$store.commit('destroyFlash')
         }
+    },
+    watch: {
+        '$route' () {
+            this.$set(this, 'fl_type', '')
+            this.$set(this, 'fl_msg', '')
+            this.$store.commit('destroyFlash')
+        }
     }
 }
 </script>
