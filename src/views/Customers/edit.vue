@@ -9,7 +9,7 @@
                 <v-btn @click="$router.go(-1)">キャンセル</v-btn>
                 <v-btn @click="submit">保存</v-btn>
             </div>
-            <form>
+            <v-form v-model="valid">
 
                 <error-alert
                 v-if="errored"
@@ -20,26 +20,32 @@
                     <v-text-field
                     v-model="inputs.last_name"
                     label="姓"
+                    :rules="nameRules"
                     required
                     ></v-text-field>
                 </v-flex>
+
                 <v-flex xs12 sm3 md3 d-inline-flex>
                     <v-text-field
                     v-model="inputs.first_name"
                     label="名"
+                    :rules="nameRules"
                     required
                     ></v-text-field>
                 </v-flex>
+
                 <v-text-field
                 v-model="inputs.email"
                 label="Email"
+                :rules="emailRules"
                 required
                 ></v-text-field>
+
                 <div class="submit-area">
                     <v-btn @click="$router.go(-1)">キャンセル</v-btn>
                     <v-btn @click="submit">保存</v-btn>
                 </div>
-          </form>
+          </v-form>
         </div>
     </div>
 </template>
@@ -63,7 +69,13 @@ export default {
                 first_name: '',
                 last_name: '',
                 email: '',
-            }
+            },
+            nameRules: [
+                v => !!v || 'Name is required'
+            ],
+            emailRules: [
+                v => !!v || 'Email is required'
+            ]
         }
     },
     created() {
