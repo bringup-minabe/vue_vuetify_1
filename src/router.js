@@ -30,7 +30,6 @@ export default new Router({
         },
         {
             path: '/customers',
-            name: 'customers',
             component: CustomersRoot,
             children: [
                 {
