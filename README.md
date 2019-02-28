@@ -12,7 +12,11 @@ npm run serve
 
 ### Compiles and minifies for production
 ```
+# production
 npm run build
+
+# development
+npm run build_dev
 ```
 
 ### Run your tests
@@ -36,6 +40,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 ### .env
 
 `.env` production  
+`.env.development` development  
 `.env.local` local
 
     VUE_APP_API_URL=/
