@@ -39,8 +39,9 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### .env
 
-`.env` production  
-`.env.development` development  
-`.env.local` local
+`.env` production   
+`.env.local` local  
+`.env.development.local` development  
+`.env.staging.local` staging
 
     VUE_APP_API_URL=/
